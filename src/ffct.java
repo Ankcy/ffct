@@ -3,7 +3,15 @@ import java.io.*;
 
 
 public class ffct {
+
+    static private int threads = 4;
+
     static public void main(String[] args) {
+        try {
+            threads = Integer.parseInt(args[0]);
+        } catch (Exception e) {
+            threads = 4;
+        }
         listFiles(".");
     }
 
@@ -25,9 +33,13 @@ public class ffct {
         }
 
         String cmds[] = {
-                "ffmpeg", "-threads", "4", "-i", file, "-y", "-vcodec", "libx265", "-acodec", "mp3",
+                "ffmpeg", "-threads", threads + "", "-i", file, "-y", "-vcodec", "libx265", "-acodec", "mp3",
                 "-f", "mp4", file + ".265.mp4"
         };
+
+        StringBuilder sb = new StringBuilder();
+        for (String s : cmds) sb.append(s).append(" ");
+        System.out.println(new String(sb));
 
         try {
             Process p = Runtime.getRuntime().exec(cmds);
